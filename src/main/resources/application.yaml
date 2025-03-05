@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: SpringJwtAuth
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:dialect: org.hibernate.dialect.MySQLDialect
+  main:
+    allow-circular-references: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/university
+    username: root
+    password: 143@Arpilu
+
+
+jwt:
+  application:
+    secretKey: 5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437
+
