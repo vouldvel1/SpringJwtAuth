@@ -25,6 +25,19 @@
         <button onclick="register()">Зарегистрироваться</button>
         <div class="switch-link" onclick="login()">Войти</div>
     </div>
+
+    <!-- Страница профиля -->
+    <div class="profile-page hidden" id="profilePage">
+        <div class="profile-card">
+            <h2>Профиль пользователя</h2>
+            <div class="profile-info">
+                <p><strong>Имя:</strong> <span id="userName"></span></p>
+                <p><strong>Email:</strong> <span id="userEmail"></span></p>
+                <p><strong>Роли:</strong> <span id="userRoles"></span></p>
+            </div>
+            <button onclick="logout()">Выйти</button>
+        </div>
+    </div>
 </div>
 
 <script src="script.js"></script>

@@ -3,11 +3,14 @@ package com.vouldvell.springjwtauth.controller;
 import com.vouldvell.springjwtauth.entity.AuthRequest;
 import com.vouldvell.springjwtauth.entity.UserInfo;
 import com.vouldvell.springjwtauth.service.JwtService;
+import com.vouldvell.springjwtauth.service.UserInfoDetails;
 import com.vouldvell.springjwtauth.service.UserInfoService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,8 +40,13 @@ public class UserController {
 
     @GetMapping("/user/userProfile")
     @PreAuthorize("hasAuthority('ROLE_USER')")
-    public String userProfile() {
-        return "Welcome to User Profile";
+    public ResponseEntity<UserInfo> userProfile(Authentication authentication) {
+        // Получаем UserDetails из Security Context
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        // Преобразуем в UserInfoDetails и извлекаем UserInfo
+        UserInfo user = ((UserInfoDetails) userDetails).getUserInfo();
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/admin/adminProfile")

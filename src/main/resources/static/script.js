@@ -6,6 +6,7 @@ function showRegister() {
 function showLogin() {
     document.getElementById('registerForm').classList.add('hidden');
     document.getElementById('loginForm').classList.remove('hidden');
+    document.getElementById('profilePage').classList.add('hidden');
 }
 
 function handleLogin() {
@@ -58,7 +59,7 @@ async function login() {
         if (response.ok) {
             const token = await response.text();
             localStorage.setItem('jwtToken', token);
-            loadUserProfile();
+            await loadUserProfile();
         }
     } catch (e) {
         console.error('Ошибка входа:', e);
@@ -79,13 +80,24 @@ async function loadUserProfile() {
         });
 
         if (response.ok) {
-            alert("Вы успешно вошли")
-            // const user = await response.json();
-            // showProfile(user);
+            const user = await response.json();
+            showProfile(user);
+        }else{
+            logout();
         }
     } catch (e) {
         console.error('Ошибка загрузки профиля:', e);
     }
+}
+
+// Отображение профиля
+function showProfile(user) {
+    document.querySelectorAll('.auth-form, .profile-page').forEach(el => el.classList.add('hidden'));
+    document.getElementById('profilePage').classList.remove('hidden');
+
+    document.getElementById('userName').textContent = user.name || 'Не указано';
+    document.getElementById('userEmail').textContent = user.email || 'Не указано';
+    document.getElementById('userRoles').textContent = user.roles || 'USER';
 }
 
 function logout() {

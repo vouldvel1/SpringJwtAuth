@@ -14,6 +14,7 @@ public class UserInfoDetails implements UserDetails {
     private String username; // Changed from 'name' to 'username' for clarity
     private String password;
     private List<GrantedAuthority> authorities;
+    private UserInfo userInfo;
 
     public UserInfoDetails(UserInfo userInfo) {
         this.username = userInfo.getName(); // Assuming 'name' is used as 'username'
@@ -22,6 +23,11 @@ public class UserInfoDetails implements UserDetails {
                 .stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
+        this.userInfo = userInfo;
+    }
+
+    public UserInfo getUserInfo() {
+        return userInfo;
     }
 
     @Override
