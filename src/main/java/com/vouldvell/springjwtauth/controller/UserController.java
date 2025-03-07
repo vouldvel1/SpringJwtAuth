@@ -25,9 +25,9 @@ public class UserController {
         this.authenticationManager = authenticationManager;
     }
 
-    @GetMapping("/welcome")
-    public String welcome() {
-        return "Welcome this endpoint is not secure";
+    @GetMapping("/")
+    public String index() {
+        return "index"; // Имя файла без расширения (index.html)
     }
 
     @PostMapping("/addNewUser")

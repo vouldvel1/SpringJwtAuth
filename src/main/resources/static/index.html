@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang = "ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторизация</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="form-box">
+    <!-- Форма входа -->
+    <div id="loginForm" align= center>
+        <h2 >Вход</h2>
+        <input type="email" id="loginEmail" placeholder="Email" required>
+        <input type="password" id="loginPassword" placeholder="Пароль" required>
+        <button onclick="login()">Войти</button>
+        <div class="switch-link" onclick="showRegister()">Зарегистрироваться</div>
+    </div>
+
+    <!-- Форма регистрации -->
+    <div id="registerForm" class="hidden" align= center>
+        <h2>Регистрация</h2>
+        <input type="text" id="regName" placeholder="Имя" required>
+        <input type="email" id="regEmail" placeholder="Email" required>
+        <input type="password" id="regPassword" placeholder="Пароль" required>
+        <button onclick="register()">Зарегистрироваться</button>
+        <div class="switch-link" onclick="login()">Войти</div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
