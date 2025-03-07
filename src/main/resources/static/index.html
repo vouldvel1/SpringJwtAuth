@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="form-box">
+<div class="form-box" id ="form-box">
     <!-- Форма входа -->
     <div id="loginForm" align= center>
         <h2 >Вход</h2>
@@ -23,20 +23,20 @@
         <input type="email" id="regEmail" placeholder="Email" required>
         <input type="password" id="regPassword" placeholder="Пароль" required>
         <button onclick="register()">Зарегистрироваться</button>
-        <div class="switch-link" onclick="login()">Войти</div>
+        <div class="switch-link" onclick="showLogin()">Войти</div>
     </div>
+</div>
 
-    <!-- Страница профиля -->
-    <div class="profile-page hidden" id="profilePage">
-        <div class="profile-card">
-            <h2>Профиль пользователя</h2>
-            <div class="profile-info">
-                <p><strong>Имя:</strong> <span id="userName"></span></p>
-                <p><strong>Email:</strong> <span id="userEmail"></span></p>
-                <p><strong>Роли:</strong> <span id="userRoles"></span></p>
-            </div>
-            <button onclick="logout()">Выйти</button>
+<!-- Страница профиля -->
+<div class="profile-page hidden" id="profilePage">
+    <div class="profile-card">
+        <h2>Профиль пользователя</h2>
+        <div class="profile-info">
+            <p><strong>Имя:</strong> <span id="userName"></span></p>
+            <p><strong>Email:</strong> <span id="userEmail"></span></p>
+            <p><strong>Роли:</strong> <span id="userRoles"></span></p>
         </div>
+        <button onclick="logout()">Выйти</button>
     </div>
 </div>
 

@@ -1,12 +1,14 @@
 function showRegister() {
     document.getElementById('loginForm').classList.add('hidden');
     document.getElementById('registerForm').classList.remove('hidden');
+    document.getElementById('form-box').classList.remove('hidden');
 }
 
 function showLogin() {
     document.getElementById('registerForm').classList.add('hidden');
     document.getElementById('loginForm').classList.remove('hidden');
     document.getElementById('profilePage').classList.add('hidden');
+    document.getElementById('form-box').classList.remove('hidden');
 }
 
 function handleLogin() {
@@ -57,8 +59,9 @@ async function login() {
         });
 
         if (response.ok) {
-            const token = await response.text();
-            localStorage.setItem('jwtToken', token);
+            const { access_token, refresh_token } = await response.json();
+            localStorage.setItem('accessToken', access_token);
+            localStorage.setItem('refreshToken', refresh_token);
             await loadUserProfile();
         }
     } catch (e) {
@@ -67,7 +70,7 @@ async function login() {
 }
 
 async function loadUserProfile() {
-    const token = localStorage.getItem('jwtToken');
+    const token = localStorage.getItem('accessToken');
 
     if (!token) {
         showLogin();
@@ -83,16 +86,44 @@ async function loadUserProfile() {
             const user = await response.json();
             showProfile(user);
         }else{
-            logout();
+            refreshAccessToken();
         }
     } catch (e) {
         console.error('Ошибка загрузки профиля:', e);
     }
 }
 
+async function refreshAccessToken() {
+    const refreshToken = localStorage.getItem('refreshToken');
+
+    if (!refreshToken) {
+        logout();
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:8080/auth/refreshToken`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ refreshToken })
+        });
+
+        if (response.ok) {
+            const newAccessToken = await response.text();
+            localStorage.setItem('accessToken', newAccessToken);
+            loadUserProfile();
+        } else {
+            logout();
+        }
+    } catch (e) {
+        console.error('Ошибка обновления токена:', e);
+        logout();
+    }
+}
+
 // Отображение профиля
 function showProfile(user) {
-    document.querySelectorAll('.auth-form, .profile-page').forEach(el => el.classList.add('hidden'));
+    document.querySelectorAll('.form-box, .profile-page').forEach(el => el.classList.add('hidden'));
     document.getElementById('profilePage').classList.remove('hidden');
 
     document.getElementById('userName').textContent = user.name || 'Не указано';
@@ -101,13 +132,16 @@ function showProfile(user) {
 }
 
 function logout() {
-    localStorage.removeItem('jwtToken');
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
     showLogin();
 }
 
 // Проверка токена при загрузке страницы
 window.onload = () => {
-    if (localStorage.getItem('jwtToken')) {
+    if (localStorage.getItem('accessToken')) {
         loadUserProfile();
+    }else{
+        showLogin();
     }
 };
