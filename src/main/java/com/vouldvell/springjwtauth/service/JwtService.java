@@ -26,23 +26,8 @@ public class JwtService {
     private String refreshSecretKey;
 
 
-
-    public String generateToken(String userName) {
-        Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, userName);
-    }
-
-    @Deprecated
-    // Create a JWT token with specified claims and subject (user name)
-    private String createToken(Map<String, Object> claims, String userName) {
-        return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(userName)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30)) // Token valid for 30 minutes
-                .signWith(getSignKey(), SignatureAlgorithm.HS256)
-                .compact();
-    }
+    private long timeToLiveInMinutes = 1;
+    private long timeToLiveInDays = 14;
 
 
     @Deprecated
@@ -50,14 +35,14 @@ public class JwtService {
         String accessToken = Jwts.builder()
                 .setSubject(userName)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 10 * 60 * 1000)) // 10 минут
+                .setExpiration(new Date(System.currentTimeMillis() + timeToLiveInMinutes * 60 * 1000))
                 .signWith(SignatureAlgorithm.HS256, getSignKey())
                 .compact();
 
         String refreshToken = Jwts.builder()
                 .setSubject(userName)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 365L * 24 * 60 * 60 * 1000)) // 1 год
+                .setExpiration(new Date(System.currentTimeMillis() + timeToLiveInDays * 24 * 60 * 60 * 1000))
                 .signWith(SignatureAlgorithm.HS256, getSignRefreshKey())
                 .compact();
 

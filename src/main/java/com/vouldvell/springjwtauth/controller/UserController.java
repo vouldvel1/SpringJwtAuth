@@ -32,11 +32,6 @@ public class UserController {
         this.authenticationManager = authenticationManager;
     }
 
-    @GetMapping("/")
-    public String index() {
-        return "index"; // Имя файла без расширения (index.html)
-    }
-
     @PostMapping("/addNewUser")
     public String addNewUser(@RequestBody UserInfo userInfo) {
         return userService.addUser(userInfo);
